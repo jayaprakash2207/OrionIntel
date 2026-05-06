@@ -136,7 +136,8 @@ async def check_alerts_for_symbol(symbol: str) -> list:
     needs_rsi = any(a["condition"].startswith("rsi_") for a in active)
 
     try:
-        bars = await get_chart_data(symbol, period="5d", interval="5m")
+        result = await get_chart_data(symbol, period="5d", interval="5m")
+        bars = result.get("bars", []) if isinstance(result, dict) else result
     except Exception:
         return []
 
