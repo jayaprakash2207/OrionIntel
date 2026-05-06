@@ -8,3 +8,5 @@ pandas==2.2.2
 numpy==1.26.4
 twilio>=9.0.0
 supabase>=2.4.3
+nsepython>=2.0
+requests>=2.31.0

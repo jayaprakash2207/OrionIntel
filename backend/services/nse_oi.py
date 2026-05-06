@@ -10,8 +10,6 @@ import requests
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, time as dtime
 from zoneinfo import ZoneInfo
-from core.gemini import ask_json
-
 _IST = ZoneInfo("Asia/Kolkata")
 _MARKET_OPEN  = dtime(9, 15)
 _MARKET_CLOSE = dtime(15, 30)

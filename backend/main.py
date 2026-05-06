@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from core.config import settings
 from routers import health, alerts
 from services.custom_alerts import check_all_alerts
+from services.oi_scheduler import start_oi_scheduler, stop_oi_scheduler
 
 log = logging.getLogger("alerts_scheduler")
 
@@ -74,10 +75,12 @@ async def lifespan(app: FastAPI):
     print(f"\n   Docs: http://localhost:{settings.PORT}/docs\n")
     _running = True
     _scheduler_task = asyncio.create_task(_alert_scheduler_loop())
+    start_oi_scheduler()
     yield
     _running = False
     if _scheduler_task and not _scheduler_task.done():
         _scheduler_task.cancel()
+    stop_oi_scheduler()
 
 
 app = FastAPI(
