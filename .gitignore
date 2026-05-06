@@ -1,0 +1,12 @@
+﻿__pycache__/
+*.pyc
+*.pyo
+*.pyd
+backend/venv/
+backend/.env
+backend/alerts_data.json
+node_modules/
+frontend/node_modules/
+.env
+*.log
+.DS_Store
