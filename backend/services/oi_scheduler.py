@@ -11,6 +11,7 @@ from zoneinfo import ZoneInfo
 
 from services.nse_oi import get_nifty_oi
 from services.alert_service import send_strong_alerts, get_alert_config_status
+from services.predictor import predict_next_move
 
 log = logging.getLogger("oi_scheduler")
 
@@ -103,7 +104,13 @@ async def _run_check():
         if not new_alerts:
             return
 
-        log.info(f"[OI Scheduler] {len(new_alerts)} new strong alert(s) — sending to WhatsApp")
+        # Claude prediction — appended to each alert's reason
+        prediction = await predict_next_move(new_alerts, data.get("oi_data", {}), spot)
+        if prediction:
+            for a in new_alerts:
+                a["reason"] = a.get("reason", "") + f"\n\n🤖 Claude Prediction:\n{prediction}"
+
+        log.info(f"[OI Scheduler] {len(new_alerts)} new strong alert(s) — sending")
 
         results = await send_strong_alerts(new_alerts, spot, min_strength="strong")
 
